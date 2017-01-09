@@ -22,6 +22,7 @@ describe('Countdown', () => {
         done();
       }, 1001);
     });
+
     it('should never set seconds to a negative number', () =>{
       var countdown = TestUtils.renderIntoDocument(<Countdown />);
       countdown.handleSetCountdown(1);
@@ -30,5 +31,26 @@ describe('Countdown', () => {
         done();
       }, 3001);
     });
+
+    it('should pause countdown on paused status', () => {
+      var countdown = TestUtils.renderIntoDocument(<Countdown/>);
+      countdown.handleSetCountdown(3);
+      countdown.handleStatusChange('paused');
+      setTimeout(()=>{
+        expect(countdown.state.count).toBe(3);
+        expect(countdown.state.countdownStatus).toBe('paused');
+      }, 1001);
+    });
+
+    it('should pause countdown on stopped status', () => {
+      var countdown = TestUtils.renderIntoDocument(<Countdown/>);
+      countdown.handleSetCountdown(3);
+      countdown.handleStatusChange('paused');
+      setTimeout(()=>{
+        expect(countdown.state.count).toBe(0);
+        expect(countdown.state.countdownStatus).toBe('stopped');
+      }, 1001);
+    });
+
   });
 });
